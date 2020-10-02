@@ -8,6 +8,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.yavuzbahceci.gitfetcher.R
 import com.yavuzbahceci.gitfetcher.persistence.AppDatabase
 import com.yavuzbahceci.gitfetcher.persistence.AppDatabase.Companion.DATABASE_NAME
+import dagger.Component
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

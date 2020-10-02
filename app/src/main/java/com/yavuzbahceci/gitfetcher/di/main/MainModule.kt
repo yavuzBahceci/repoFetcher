@@ -1,6 +1,7 @@
 package com.yavuzbahceci.gitfetcher.di.main
 
 import com.yavuzbahceci.gitfetcher.api.main.RepoFetcherMainService
+import com.yavuzbahceci.gitfetcher.repository.main.MainRepository
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -19,5 +20,8 @@ class MainModule{
     }
 
     // Main Repo
+    fun provideMainRepository(): MainRepository{
+        return MainRepository()
+    }
 
 }

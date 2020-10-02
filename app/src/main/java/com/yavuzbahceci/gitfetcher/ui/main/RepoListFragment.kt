@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.yavuzbahceci.gitfetcher.R
+import kotlinx.android.synthetic.main.fragment_repo_list.*
 
 
 /**
@@ -27,7 +29,13 @@ class RepoListFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_repo_list, container, false)
     }
 
-    companion object {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
+        focusable_view.requestFocus()
+    }
+
+    private fun navDetailFragment() {
+        findNavController().navigate(R.id.action_repoListFragment_to_repoDetailFragment)
     }
 }

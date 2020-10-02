@@ -3,10 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
 
     <item
-        android:id="@+id/action_search"
-        android:icon="@android:drawable/ic_menu_search"
+        android:id="@+id/action_star_toolbar"
+        android:icon="@android:drawable/btn_star"
         app:showAsAction="always"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         android:title="@string/search"/>
+
 
 </menu>

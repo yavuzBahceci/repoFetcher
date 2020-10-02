@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.yavuzbahceci.gitfetcher.R
+import com.yavuzbahceci.gitfetcher.ui.main.state.SearchField
 import com.yavuzbahceci.gitfetcher.util.ApiEmptyResponse
 import com.yavuzbahceci.gitfetcher.util.ApiErrorResponse
 import com.yavuzbahceci.gitfetcher.util.ApiSuccessResponse
@@ -36,27 +37,28 @@ class RepoListFragment : BaseMainFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.testRetrofit().observe(viewLifecycleOwner, Observer { response ->
-            when (response) {
-                is ApiSuccessResponse -> {
-                    Log.d(TAG, "onViewCreated: LOGIN RESPONSE: ${response.body}")
-                }
+        subscribeObservers()
+    }
 
-                is ApiErrorResponse -> {
-                    Log.d(TAG, "onViewCreated: LOGIN RESPONSE: ${response.errorMessage}")
-
-                }
-
-                is ApiEmptyResponse -> {
-                    Log.d(TAG, "onViewCreated: LOGIN RESPONSE: Empty Response")
-
-                }
+    private fun subscribeObservers() {
+        viewModel.viewState.observe(viewLifecycleOwner, Observer {
+            it.searchField?.search_text?.let {
+                // set search edit text
+                TODO()
             }
         })
     }
 
     private fun navDetailFragment() {
         findNavController().navigate(R.id.action_repoListFragment_to_repoDetailFragment)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.setSearchField(
+            // Set the edit_text TODO()
+            SearchField("")
+        )
     }
 
     companion object {

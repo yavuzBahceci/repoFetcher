@@ -13,7 +13,7 @@ import com.yavuzbahceci.gitfetcher.R
  * Use the [RepoDetailFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class RepoDetailFragment : Fragment() {
+class RepoDetailFragment : BaseMainFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

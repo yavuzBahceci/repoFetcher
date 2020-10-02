@@ -19,6 +19,8 @@ import javax.inject.Singleton
 )
 interface AppComponent : AndroidInjector<BaseApp> {
 
+    // Manager, inject anywhere
+
     @Component.Builder
     interface Builder{
 

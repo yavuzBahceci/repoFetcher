@@ -1,8 +1,12 @@
 package com.yavuzbahceci.gitfetcher.repository.main
 
-class MainRepository
-constructor(
+import com.yavuzbahceci.gitfetcher.api.main.RepoFetcherMainService
+import javax.inject.Inject
 
+class MainRepository
+@Inject
+constructor(
+    val repoFetcherMainService: RepoFetcherMainService
 ){
 
 }

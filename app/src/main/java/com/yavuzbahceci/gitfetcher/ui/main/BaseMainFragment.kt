@@ -9,8 +9,6 @@ import javax.inject.Inject
 
 abstract class BaseMainFragment: DaggerFragment(){
 
-    val TAG: String = "AppDebug"
-
     @Inject
     lateinit var providerFactory: ViewModelProviderFactory
 
@@ -22,6 +20,10 @@ abstract class BaseMainFragment: DaggerFragment(){
         viewModel = activity?.run {
             ViewModelProvider(this, providerFactory).get(MainViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
+    }
+
+    companion object {
+        private const val TAG = "BaseMainFragment"
     }
 
 }

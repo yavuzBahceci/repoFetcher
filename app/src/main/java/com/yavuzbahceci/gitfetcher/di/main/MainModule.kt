@@ -19,9 +19,10 @@ class MainModule{
             .create(RepoFetcherMainService::class.java)
     }
 
+    /*
     // Main Repo
     fun provideMainRepository(): MainRepository{
         return MainRepository()
-    }
+    }*/
 
 }

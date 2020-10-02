@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.fragment_repo_list.*
  * Use the [RepoListFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class RepoListFragment : Fragment() {
+class RepoListFragment : BaseMainFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

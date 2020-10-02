@@ -17,19 +17,13 @@ class RepositoryResponseConverter(
                 extractStargazerCount(),
                 extractName(),
                 extractOwnerName(),
-                extractAvatarUrl(),
-                extractIsStarred()
+                extractAvatarUrl()
             )
         }catch (exception: Exception){
             null
         }
     }
 
-    private fun extractIsStarred(): Boolean {
-        TODO()
-        // check id if is starred
-
-    }
 
     private fun extractAvatarUrl(): String {
         return source.owner?.avatarUrl.orEmpty()

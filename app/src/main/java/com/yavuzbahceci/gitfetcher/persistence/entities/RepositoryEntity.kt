@@ -27,8 +27,5 @@ data class RepositoryEntity(
     var ownerName: String,
 
     @ColumnInfo(name = "owner_picture_url")
-    var avatarUrl: String,
-
-    @ColumnInfo(name = "isStarred")
-    var isStarred: Boolean
+    var avatarUrl: String
 )

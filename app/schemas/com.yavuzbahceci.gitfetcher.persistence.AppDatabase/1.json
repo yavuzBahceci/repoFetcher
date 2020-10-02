@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "01ad5f59df5da6ca7f1025dffb69b681",
+    "identityHash": "c7435648eee70c6e70f84c7dd2280432",
     "entities": [
       {
         "tableName": "repository_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `open_issues_count` INTEGER, `star_count` INTEGER, `repo_name` TEXT NOT NULL, `owner_name` TEXT NOT NULL, `owner_picture_url` TEXT NOT NULL, `isStarred` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `open_issues_count` INTEGER, `star_count` INTEGER, `repo_name` TEXT NOT NULL, `owner_name` TEXT NOT NULL, `owner_picture_url` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -43,12 +43,6 @@
             "columnName": "owner_picture_url",
             "affinity": "TEXT",
             "notNull": true
-          },
-          {
-            "fieldPath": "isStarred",
-            "columnName": "isStarred",
-            "affinity": "INTEGER",
-            "notNull": true
           }
         ],
         "primaryKey": {
@@ -64,7 +58,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '01ad5f59df5da6ca7f1025dffb69b681')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c7435648eee70c6e70f84c7dd2280432')"
     ]
   }
 }

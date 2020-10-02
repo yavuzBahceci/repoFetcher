@@ -9,12 +9,10 @@ import retrofit2.Retrofit
 @Module
 class MainModule{
 
-    // TEMPORARY
     @MainScope
     @Provides
-    fun provideFakeApiService(): RepoFetcherMainService{
-        return Retrofit.Builder()
-            .baseUrl("https://open-api.xyz")
+    fun provideMainApiService(retrofitBuilder: Retrofit.Builder): RepoFetcherMainService{
+        return retrofitBuilder
             .build()
             .create(RepoFetcherMainService::class.java)
     }

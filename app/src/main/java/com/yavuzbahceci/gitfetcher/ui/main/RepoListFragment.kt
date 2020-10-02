@@ -12,7 +12,6 @@ import com.yavuzbahceci.gitfetcher.R
 import com.yavuzbahceci.gitfetcher.util.ApiEmptyResponse
 import com.yavuzbahceci.gitfetcher.util.ApiErrorResponse
 import com.yavuzbahceci.gitfetcher.util.ApiSuccessResponse
-import kotlinx.android.synthetic.main.fragment_repo_list.*
 
 
 /**

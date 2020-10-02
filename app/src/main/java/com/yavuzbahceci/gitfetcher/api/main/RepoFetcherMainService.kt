@@ -15,7 +15,8 @@ interface RepoFetcherMainService {
 
     companion object {
 
-        private const val ownerArgName = "version"
+        private const val ownerArgName = "userName"
         private const val getUserReposUrl = "users/{$ownerArgName}/repos"
     }
+
 }

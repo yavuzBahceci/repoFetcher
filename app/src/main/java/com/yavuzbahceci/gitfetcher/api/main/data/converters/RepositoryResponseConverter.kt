@@ -7,6 +7,7 @@ import com.yavuzbahceci.gitfetcher.util.converter.ConverterProvider
 
 class RepositoryResponseConverter(
     override val source: RepositoryResponse
+
 ): Converter<RepositoryResponse, RepositoryEntity?> {
     override fun convert(): RepositoryEntity? {
         return try {
@@ -16,11 +17,18 @@ class RepositoryResponseConverter(
                 extractStargazerCount(),
                 extractName(),
                 extractOwnerName(),
-                extractAvatarUrl()
+                extractAvatarUrl(),
+                extractIsStarred()
             )
         }catch (exception: Exception){
             null
         }
+    }
+
+    private fun extractIsStarred(): Boolean {
+        TODO()
+        // check id if is starred
+
     }
 
     private fun extractAvatarUrl(): String {

@@ -21,8 +21,7 @@ interface RepositoryDao {
     @Query("SELECT * FROM repository_table WHERE repo_name = :name")
     fun searchByName(name: String): RepositoryEntity
 
-    /*
-    * @Query("UPDATE repository_table SET favOption = :favOption WHERE id = :id")
-    * */
+    @Query("SELECT * FROM repository_table WHERE owner_name = :ownerName")
+    fun searchByOwnerName(ownerName: String): List<RepositoryEntity>
 
 }

@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
+import androidx.navigation.findNavController
 import com.yavuzbahceci.gitfetcher.R
 import com.yavuzbahceci.gitfetcher.ui.BaseActivity
 import com.yavuzbahceci.gitfetcher.ui.ResponseType
@@ -12,7 +15,7 @@ import com.yavuzbahceci.gitfetcher.view_models.ViewModelProviderFactory
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity(), NavController.OnDestinationChangedListener {
 
     @Inject
     lateinit var providerFactory: ViewModelProviderFactory
@@ -29,6 +32,7 @@ class MainActivity : BaseActivity() {
         }
 
         viewModel = ViewModelProvider(this, providerFactory).get(MainViewModel::class.java)
+        findNavController(R.id.main_nav_host_fragment).addOnDestinationChangedListener(this)
         subscribeObservers()
     }
 
@@ -70,6 +74,14 @@ class MainActivity : BaseActivity() {
 
     companion object {
         private const val TAG = "MainActivity"
+    }
+
+    override fun onDestinationChanged(
+        controller: NavController,
+        destination: NavDestination,
+        arguments: Bundle?
+    ) {
+        viewModel.cancelActiveJobs()
     }
 
 }

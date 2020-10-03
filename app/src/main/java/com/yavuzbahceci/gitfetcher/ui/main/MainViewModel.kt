@@ -24,7 +24,7 @@ constructor(
     override fun handleStateEvent(stateEvent: MainStateEvent): LiveData<DataState<MainViewState>> {
         return when(stateEvent) {
             is SearchAttemptEvent -> {
-                return mainRepository.testGetRepos(stateEvent.ownerName)
+                AbsentLiveData.create()
             }
 
             is checkPreviousSearchEvent -> {
@@ -44,5 +44,14 @@ constructor(
 
     override fun initNewViewState(): MainViewState {
         return MainViewState()
+    }
+
+    fun cancelActiveJobs() {
+        mainRepository.cancelActiveJobs()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        cancelActiveJobs()
     }
 }

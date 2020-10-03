@@ -8,7 +8,6 @@
     <string name="text_success">Success</string>
     <string name="text_ok">OK</string>
     <string name="text_home">Home</string>
-    <string name="text_submit">Submit</string>
     <string name="text_owner">Owner</string>
     <string name="text_stars">Stars: </string>
     <string name="text_open_issues">Open Issues: </string>
@@ -28,5 +27,6 @@
     <string name="arg_username">arg_username</string>
     <string name="search">Search</string>
     <string name="text_yes">yes</string>
+    <string name="text_submit">Submit</string>
 
 </resources>

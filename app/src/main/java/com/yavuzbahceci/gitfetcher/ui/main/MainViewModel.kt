@@ -24,7 +24,7 @@ constructor(
     override fun handleStateEvent(stateEvent: MainStateEvent): LiveData<DataState<MainViewState>> {
         return when(stateEvent) {
             is SearchAttemptEvent -> {
-                AbsentLiveData.create()
+                mainRepository.attemptSearch(stateEvent.ownerName)
             }
 
             is checkPreviousSearchEvent -> {

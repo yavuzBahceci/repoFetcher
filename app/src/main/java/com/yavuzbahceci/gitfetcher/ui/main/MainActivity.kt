@@ -22,6 +22,10 @@ class MainActivity : BaseActivity(), NavController.OnDestinationChangedListener 
 
     lateinit var viewModel: MainViewModel
 
+    override fun displayProgressBar(boolean: Boolean) {
+        TODO("Not yet implemented")
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

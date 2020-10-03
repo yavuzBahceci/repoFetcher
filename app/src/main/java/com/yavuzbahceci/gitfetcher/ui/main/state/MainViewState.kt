@@ -8,7 +8,7 @@ data class MainViewState(
 data class SearchField(
     var search_text: String? = null
 ) {
-    class SearchError{
+    class SearchError {
         companion object {
             fun mustHasLetter(): String {
                 return "You cannot search with empty string."
@@ -20,7 +20,7 @@ data class SearchField(
         }
     }
 
-    fun isValidForSearch(): String = if (search_text.isNullOrEmpty()){
+    fun isValidForSearch(): String = if (search_text.isNullOrEmpty()) {
         SearchError.mustHasLetter()
     } else {
         SearchError.none()

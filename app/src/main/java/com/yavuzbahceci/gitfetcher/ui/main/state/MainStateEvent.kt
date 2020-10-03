@@ -6,5 +6,9 @@ sealed class MainStateEvent {
         val ownerName: String
     ): MainStateEvent()
 
+    data class ChangeStarOptionEvent(
+        val repoId: Int
+    ): MainStateEvent()
+
     class checkPreviousSearchEvent: MainStateEvent()
 }

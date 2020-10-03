@@ -17,7 +17,8 @@ import kotlinx.coroutines.Dispatchers.Main
 
 abstract class NetworkBoundResource<ResponseObject, ViewStateType>
     (
-    isNetWorkAvailable: Boolean
+    isNetWorkAvailable: Boolean,
+    isNetworkRequest: Boolean
 ) {
 
     protected val result = MediatorLiveData<DataState<ViewStateType>>()
@@ -28,34 +29,43 @@ abstract class NetworkBoundResource<ResponseObject, ViewStateType>
         setJob(startNewJob())
         setValue(DataState.loading(isLoading = true, cachedData = null))
 
-        if (isNetWorkAvailable) {
-            coroutineScope.launch {
-                withContext(Main) {
-                    val apiResponse = createCall()
-                    result.addSource(apiResponse) { response ->
-                        result.removeSource(apiResponse)
+        if(isNetworkRequest) {
+            if (isNetWorkAvailable) {
+                coroutineScope.launch {
+                    withContext(Main) {
+                        val apiResponse = createCall()
+                        result.addSource(apiResponse) { response ->
+                            result.removeSource(apiResponse)
 
-                        coroutineScope.launch {
-                            handleNetworkCall(response)
+                            coroutineScope.launch {
+                                handleNetworkCall(response)
+                            }
                         }
                     }
                 }
-            }
-            GlobalScope.launch(IO) {
-                delay(4000)
-                if (!job.isCompleted) {
-                    Log.e(TAG, "Job Network Timeout: ")
-                    job.cancel(CancellationException(UNABLE_TO_RESOLVE_HOST))
+                GlobalScope.launch(IO) {
+                    delay(4000)
+                    if (!job.isCompleted) {
+                        Log.e(TAG, "Job Network Timeout: ")
+                        job.cancel(CancellationException(UNABLE_TO_RESOLVE_HOST))
+                    }
                 }
+            } else {
+                onErrorReturn(
+                    UNABLE_TO_DO_OPERATION_WO_INTERNET,
+                    shouldUseToast = true,
+                    shouldDialog = false
+                )
             }
-        } else {
-            onErrorReturn(
-                UNABLE_TO_DO_OPERATION_WO_INTERNET,
-                shouldUseToast = true,
-                shouldDialog = false
-            )
+        }else {
+            coroutineScope.launch {
+
+                createCacheRequestAndReturn()
+            }
         }
     }
+
+
 
     suspend fun handleNetworkCall(response: GenericApiResponse<ResponseObject>?) {
         when (response) {
@@ -142,6 +152,8 @@ abstract class NetworkBoundResource<ResponseObject, ViewStateType>
     abstract suspend fun handleApiSuccessResponse(response: ApiSuccessResponse<ResponseObject>)
 
     abstract fun createCall(): LiveData<GenericApiResponse<ResponseObject>>
+
+    abstract suspend fun createCacheRequestAndReturn()
 
     abstract fun setJob(job: Job)
 

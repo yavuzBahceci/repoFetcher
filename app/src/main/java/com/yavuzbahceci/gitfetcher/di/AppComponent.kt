@@ -2,6 +2,7 @@ package com.yavuzbahceci.gitfetcher.di
 
 import android.app.Application
 import com.yavuzbahceci.gitfetcher.base.BaseApp
+import com.yavuzbahceci.gitfetcher.util.InternetChecker
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
@@ -19,7 +20,7 @@ import javax.inject.Singleton
 )
 interface AppComponent : AndroidInjector<BaseApp> {
 
-    // Manager, inject anywhere
+    val internetChecker: InternetChecker
 
     @Component.Builder
     interface Builder{

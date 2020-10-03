@@ -1,26 +1,45 @@
 package com.yavuzbahceci.gitfetcher.di.main
 
+import android.content.SharedPreferences
 import com.yavuzbahceci.gitfetcher.api.main.RepoFetcherMainService
+import com.yavuzbahceci.gitfetcher.persistence.daos.RepositoryDao
+import com.yavuzbahceci.gitfetcher.persistence.daos.StarredRepoDao
 import com.yavuzbahceci.gitfetcher.repository.main.MainRepository
+import com.yavuzbahceci.gitfetcher.util.InternetChecker
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
 
 @Module
-class MainModule{
+class MainModule {
 
     @MainScope
     @Provides
-    fun provideMainApiService(retrofitBuilder: Retrofit.Builder): RepoFetcherMainService{
+    fun provideMainApiService(retrofitBuilder: Retrofit.Builder): RepoFetcherMainService {
         return retrofitBuilder
             .build()
             .create(RepoFetcherMainService::class.java)
     }
 
-    /*
-    // Main Repo
-    fun provideMainRepository(): MainRepository{
-        return MainRepository()
-    }*/
+
+    @MainScope
+    @Provides
+    fun provideMainRepository(
+        starredRepoDao: StarredRepoDao,
+        repositoryDao: RepositoryDao,
+        repoFetcherMainService: RepoFetcherMainService,
+        internetChecker: InternetChecker,
+        preferences: SharedPreferences,
+        editor: SharedPreferences.Editor
+    ): MainRepository {
+        return MainRepository(
+            starredRepoDao,
+            repositoryDao,
+            repoFetcherMainService,
+            internetChecker,
+            preferences,
+            editor
+        )
+    }
 
 }

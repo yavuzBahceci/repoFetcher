@@ -75,6 +75,8 @@ class RepoListFragment : BaseMainFragment() {
         )
     }
 
+
+
     companion object {
         private const val TAG = "RepoListFragment"
     }

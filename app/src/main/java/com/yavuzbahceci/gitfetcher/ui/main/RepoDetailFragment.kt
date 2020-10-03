@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.yavuzbahceci.gitfetcher.R
+import com.yavuzbahceci.gitfetcher.ui.main.state.MainStateEvent
+import kotlinx.android.synthetic.main.fragment_repo_list.*
 
 
 /**
@@ -27,6 +29,14 @@ class RepoDetailFragment : BaseMainFragment() {
         return inflater.inflate(R.layout.fragment_repo_detail, container, false)
     }
 
+    fun changeStarOption() {
+        val id: Int = 0
+        viewModel.setStateEvent(
+            MainStateEvent.ChangeStarOptionEvent(
+                id
+            )
+        )
+    }
     companion object {
 
     }

@@ -1,6 +1,9 @@
 package com.yavuzbahceci.gitfetcher.di
 
 import android.app.Application
+import android.content.Context
+import android.content.SharedPreferences
+import androidx.room.PrimaryKey
 import androidx.room.Room
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
@@ -10,9 +13,11 @@ import com.google.gson.GsonBuilder
 import com.yavuzbahceci.gitfetcher.R
 import com.yavuzbahceci.gitfetcher.persistence.AppDatabase
 import com.yavuzbahceci.gitfetcher.persistence.AppDatabase.Companion.DATABASE_NAME
+import com.yavuzbahceci.gitfetcher.persistence.daos.RepositoryDao
+import com.yavuzbahceci.gitfetcher.persistence.daos.StarredRepoDao
 import com.yavuzbahceci.gitfetcher.util.Constants
 import com.yavuzbahceci.gitfetcher.util.LiveDataCallAdapterFactory
-import dagger.Component
+import com.yavuzbahceci.gitfetcher.util.PreferenceKeys
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -21,6 +26,19 @@ import javax.inject.Singleton
 
 @Module
 class AppModule{
+
+
+    @Singleton
+    @Provides
+    fun provideSharedPreferences(application: Application): SharedPreferences {
+        return application.getSharedPreferences(PreferenceKeys.APP_PREFERENCES, Context.MODE_PRIVATE)
+    }
+
+    @Singleton
+    @Provides
+    fun provideSharedPrefsEditor(sharedPreferences: SharedPreferences): SharedPreferences.Editor {
+        return sharedPreferences.edit()
+    }
 
     @Singleton
     @Provides
@@ -59,6 +77,18 @@ class AppModule{
     fun provideGlideInstance(application: Application, requestOptions: RequestOptions): RequestManager {
         return Glide.with(application)
             .setDefaultRequestOptions(requestOptions)
+    }
+
+    @Singleton
+    @Provides
+    fun provideRepositoryDao(db: AppDatabase): RepositoryDao {
+        return db.getRepositoryDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideStarredRepoDao(db: AppDatabase): StarredRepoDao {
+        return db.getStarredRepoDao()
     }
 
 }

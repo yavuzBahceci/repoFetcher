@@ -2,6 +2,7 @@ package com.yavuzbahceci.gitfetcher.ui.main
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -23,7 +24,11 @@ class MainActivity : BaseActivity(), NavController.OnDestinationChangedListener 
     lateinit var viewModel: MainViewModel
 
     override fun displayProgressBar(boolean: Boolean) {
-        TODO("Not yet implemented")
+        if (boolean) {
+            progress_bar.visibility = View.VISIBLE
+        }else{
+            progress_bar.visibility = View.GONE
+        }
     }
 
 
@@ -43,29 +48,12 @@ class MainActivity : BaseActivity(), NavController.OnDestinationChangedListener 
     private fun subscribeObservers() {
 
         viewModel.dataState.observe(this, Observer { dataState ->
+            onDataStateChange(dataState)
             dataState.data?.let { data ->
                 data.data?.let { event ->
                     event.getContentIfNotHandled().let {
                         // getList
                     }
-                }
-                data.response.let { event ->
-                    event?.getContentIfNotHandled().let {
-                        when (it?.responseType) {
-                            is Dialog -> {
-                                // Show Dialog
-                            }
-
-                            is Toast -> {
-                                // Show Toast
-                            }
-
-                            is None -> {
-                                Log.e(Companion.TAG, "subscribeObservers: Response ${it.message}")
-                            }
-                        }
-                    }
-
                 }
             }
 

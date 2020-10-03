@@ -42,7 +42,7 @@ abstract class NetworkBoundResource<ResponseObject, ViewStateType>
                 }
             }
             GlobalScope.launch(IO) {
-
+                delay(4000)
                 if (!job.isCompleted) {
                     Log.e(TAG, "Job Network Timeout: ")
                     job.cancel(CancellationException(UNABLE_TO_RESOLVE_HOST))

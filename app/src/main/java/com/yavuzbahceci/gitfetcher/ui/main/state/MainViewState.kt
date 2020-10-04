@@ -10,7 +10,7 @@ data class MainViewState(
 ) {
     data class ListRepoFields(
         var repoList: List<RepositoryEntity> = ArrayList(),
-        var searchQuery: String = "",
+        var searchQuery: String = "mitchtabian",
         var page: Int = 1,
         var isQueryInProgress: Boolean = false,
         var isQueryExhausted: Boolean = false

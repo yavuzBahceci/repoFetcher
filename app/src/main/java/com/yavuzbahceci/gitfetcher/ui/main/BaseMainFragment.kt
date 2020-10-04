@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.RequestManager
 import com.yavuzbahceci.gitfetcher.ui.DataStateChangeListener
 import com.yavuzbahceci.gitfetcher.ui.UICommunicationListener
+import com.yavuzbahceci.gitfetcher.ui.main.viewmodel.MainViewModel
 import com.yavuzbahceci.gitfetcher.view_models.ViewModelProviderFactory
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject

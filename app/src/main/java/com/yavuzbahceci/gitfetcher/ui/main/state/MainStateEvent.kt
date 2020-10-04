@@ -2,14 +2,9 @@ package com.yavuzbahceci.gitfetcher.ui.main.state
 
 sealed class MainStateEvent {
 
-    data class SearchAttemptEvent(
-        val ownerName: String,
-        val page: Int
-    ): MainStateEvent()
+    class SearchAttemptEvent(): MainStateEvent()
 
-    data class ChangeStarOptionEvent(
-        val repoId: Int
-    ): MainStateEvent()
+    class ChangeStarOptionEvent: MainStateEvent()
 
     class None: MainStateEvent()
 

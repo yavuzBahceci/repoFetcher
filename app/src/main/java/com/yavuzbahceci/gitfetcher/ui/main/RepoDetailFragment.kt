@@ -63,9 +63,7 @@ class RepoDetailFragment : BaseMainFragment() {
     fun changeStarOption() {
         val id: Int = 0
         viewModel.setStateEvent(
-            MainStateEvent.ChangeStarOptionEvent(
-                id
-            )
+            MainStateEvent.ChangeStarOptionEvent()
         )
     }
     companion object {

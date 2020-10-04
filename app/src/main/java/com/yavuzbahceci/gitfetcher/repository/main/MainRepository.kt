@@ -62,7 +62,6 @@ constructor(
                         if (page * PAGINATION_PAGE_SIZE > viewState.listRepoFields.repoList.size) {
                             viewState.listRepoFields.isQueryExhausted = true
                         }
-                        println("!!!! before on complete ${viewState.listRepoFields}")
                         onCompleteJob(DataState.data(viewState, null))
                     }
                 }
@@ -79,9 +78,6 @@ constructor(
                                     isQueryInProgress = true
                                 )
                             )
-                            it.map {
-                                println("!!!!!!!!$it  load from cache")
-                            }
                         }
                     }
                 }
@@ -90,15 +86,11 @@ constructor(
             override suspend fun updateLocalDb(cacheObject: List<RepositoryEntity>?) {
                 if (cacheObject != null) {
                     withContext(IO) {
-                        println("!!!!!! WithContextIO")
                         for (repo in cacheObject) {
-                            println("!!!!!! Before try")
                             try {
                                 launch {
-                                    println("!!!!!! Launch")
                                     Log.d(TAG, "updateLocalDb: Repo inserting $repo")
                                     repositoryDao.insertOrIgnore(repo)
-                                    println("Inserting repo $repo !!!!!!")
                                 }
                             } catch (e: Exception) {
                                 Log.e(
@@ -117,12 +109,8 @@ constructor(
 
             override suspend fun handleApiSuccessResponse(response: ApiSuccessResponse<List<RepositoryResponse>>) {
                 val repositoryList: ArrayList<RepositoryEntity> = ArrayList()
-                println("${response.body} !!!!!!!!! response body")
                 for (repositoryResponse in response.body) {
                     repositoryResponse.convert().let { repositoryList.add(it) }
-                }
-                response.body.map {
-                    println("!!!!!!!!$it success Response")
                 }
                 updateLocalDb(repositoryList)
                 createCacheRequestAndReturn()

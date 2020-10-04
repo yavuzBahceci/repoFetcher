@@ -23,3 +23,9 @@ fun MainViewModel.getIsQueryInProgress(): Boolean {
         return it.listRepoFields.isQueryInProgress
     }
 }
+
+fun MainViewModel.getRepoId(): Int {
+    getCurrentViewStateOrNew().let {
+        return it.detailRepoFields.repositoryEntity?.id!!
+    }
+}

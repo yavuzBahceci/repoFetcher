@@ -27,7 +27,7 @@
             android:id="@+id/repo_name_detail"
             android:gravity="center_vertical"
             android:layout_marginStart="10dp"
-            android:text="The Title of a Blog"
+            android:text="Name of Repo"
             android:textColor="#000"
             android:textSize="19sp"
             android:textStyle="bold"

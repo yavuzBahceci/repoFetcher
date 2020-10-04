@@ -60,8 +60,6 @@ class RepoDetailFragment : BaseMainFragment() {
         repo_name_detail.setText(repositoryEntity.name)
         star_count.setText("Stars: ${repositoryEntity.stargazerCount}")
         open_issues_count.setText("Open Issues: ${repositoryEntity.openIssuesCount}")
-        tool_bar_text.setText(repositoryEntity.name)
-
     }
 
     fun changeStarOption() {

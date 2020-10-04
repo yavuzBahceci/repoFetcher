@@ -156,7 +156,7 @@ constructor(
 
     fun checkIfRepoStarredBefore(repoId: Int): Boolean {
         starredRepoDao.searchById(repoId).let {
-            it.id?.let {
+            it?.id?.let {
                 return true
             }
         }

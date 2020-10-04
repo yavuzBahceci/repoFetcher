@@ -146,9 +146,9 @@ class RepositoryListAdapter(
             itemView.repo_name.text = item.name
             itemView.repo_owner.text = item.ownerName
             if (item.isFromFavList){
-                itemView.list_star_logo.setImageResource(R.drawable.ic_star_fav_24dp)
-            }else {
                 itemView.list_star_logo.setImageResource(R.drawable.ic_star_checked_24dp)
+            }else {
+                itemView.list_star_logo.setImageResource(R.drawable.ic_star_fav_24dp)
             }
         }
     }

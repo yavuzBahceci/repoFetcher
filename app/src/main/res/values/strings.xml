@@ -23,5 +23,7 @@
     <string name="text_yes">yes</string>
     <string name="text_submit">Submit</string>
     <string name="no_more_results">No more results...</string>
+    <string name="name_of_repo">Name of Repo</string>
+    <string name="owner_of_the_repo">Owner of the Repo</string>
 
 </resources>

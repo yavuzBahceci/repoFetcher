@@ -27,8 +27,10 @@ data class RepositoryEntity(
     var ownerName: String,
 
     @ColumnInfo(name = "owner_picture_url")
-    var avatarUrl: String
+    var avatarUrl: String,
 
+    @ColumnInfo(name = "is_from_fav_list")
+    var isFromFavList: Boolean = false
 
 ){
 

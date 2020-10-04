@@ -157,7 +157,9 @@ class RepoListFragment : BaseMainFragment(), RepositoryListAdapter.Interaction, 
 
     override fun onDestroy() {
         super.onDestroy()
+/*
         repo_list_recyclerview.adapter = null
+*/
     }
 
     override fun onItemSelected(position: Int, item: RepositoryEntity) {

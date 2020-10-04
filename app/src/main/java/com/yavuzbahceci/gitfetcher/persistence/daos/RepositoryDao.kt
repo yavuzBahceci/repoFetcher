@@ -36,8 +36,10 @@ interface RepositoryDao {
     @Query("SELECT * FROM repository_table")
     fun getAllRepositories(): LiveData<List<RepositoryEntity>>
 
-
     @Query("DELETE FROM repository_table")
     fun deleteAll()
+
+    @Query("UPDATE repository_table SET is_from_fav_list = :boolean WHERE id = :id")
+    fun updateFavListStatus(boolean: Boolean, id: Int)
 
 }

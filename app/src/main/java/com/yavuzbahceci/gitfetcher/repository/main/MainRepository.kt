@@ -9,6 +9,7 @@ import com.yavuzbahceci.gitfetcher.api.main.data.RepositoryResponse
 import com.yavuzbahceci.gitfetcher.persistence.daos.RepositoryDao
 import com.yavuzbahceci.gitfetcher.persistence.daos.StarredRepoDao
 import com.yavuzbahceci.gitfetcher.persistence.entities.RepositoryEntity
+import com.yavuzbahceci.gitfetcher.persistence.entities.StarredRepoEntity
 import com.yavuzbahceci.gitfetcher.repository.JobManager
 import com.yavuzbahceci.gitfetcher.repository.NetworkBoundResource
 import com.yavuzbahceci.gitfetcher.ui.DataState
@@ -110,7 +111,8 @@ constructor(
             override suspend fun handleApiSuccessResponse(response: ApiSuccessResponse<List<RepositoryResponse>>) {
                 val repositoryList: ArrayList<RepositoryEntity> = ArrayList()
                 for (repositoryResponse in response.body) {
-                    repositoryResponse.convert().let { repositoryList.add(it) }
+                    repositoryResponse.convert(checkIfRepoStarredBefore(repositoryResponse.repositoryId))
+                        .let { repositoryList.add(it) }
                 }
                 updateLocalDb(repositoryList)
                 createCacheRequestAndReturn()
@@ -152,6 +154,36 @@ constructor(
         }
     }
 
+    fun checkIfRepoStarredBefore(repoId: Int): Boolean {
+        starredRepoDao.searchById(repoId).let {
+            it.id?.let {
+                return true
+            }
+        }
+        return false
+    }
+
+    fun addToFavList(repositoryEntity: RepositoryEntity) {
+        starredRepoDao.insertAndReplace(
+            StarredRepoEntity(
+                id = repositoryEntity.id,
+                name = repositoryEntity.name,
+                ownerName = repositoryEntity.ownerName
+            )
+        )
+        repositoryDao.updateFavListStatus(true, repositoryEntity.id)
+    }
+
+    fun deleteFromFavList(repositoryEntity: RepositoryEntity) {
+        starredRepoDao.delete(
+            StarredRepoEntity(
+                repositoryEntity.id,
+                repositoryEntity.name,
+                repositoryEntity.ownerName
+            )
+        )
+        repositoryDao.updateFavListStatus(false, repositoryEntity.id)
+    }
 
     companion object {
         private const val TAG = "MainRepository"
@@ -159,13 +191,14 @@ constructor(
 
 }
 
-private fun RepositoryResponse.convert(): RepositoryEntity {
+private fun RepositoryResponse.convert(starSituation: Boolean): RepositoryEntity {
     return RepositoryEntity(
         this.repositoryId,
         this.openIssuesCount,
         this.starsCount,
         this.repositoryName!!,
         this.owner?.ownerName!!,
-        this.owner?.avatarUrl!!
+        this.owner?.avatarUrl!!,
+        starSituation
     )
 }

@@ -1,9 +1,6 @@
 package com.yavuzbahceci.gitfetcher.persistence.daos
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.yavuzbahceci.gitfetcher.persistence.entities.StarredRepoEntity
 
 @Dao
@@ -22,4 +19,7 @@ interface StarredRepoDao {
 
     @Query("SELECT * FROM starred_repo_table WHERE owner_name = :ownerName")
     fun searchByOwnerName(ownerName: String): List<StarredRepoEntity>
+
+    @Delete
+    fun delete(starredRepoEntity: StarredRepoEntity)
 }

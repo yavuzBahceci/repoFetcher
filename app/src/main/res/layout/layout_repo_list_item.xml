@@ -15,37 +15,59 @@
         android:layout_height="wrap_content"
         >
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:orientation="vertical"
-            android:padding="10dp"
-            android:id="@+id/container1"
             >
-            <TextView
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/repo_name"
-                android:text="Name of Repo"
-                android:textColor="#000"
-                android:textSize="19sp"
-                />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/list_star_logo"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:layout_marginEnd="32dp"
+                android:id="@+id/container1"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/repo_name"
+                    android:text="@string/name_of_repo"
+                    android:textColor="#000"
+                    android:textSize="19sp"
+                    />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/repo_owner"
-                android:text="Owner of the Repo"
-                android:textColor="@color/grey5"
-                android:textSize="15sp"
-                android:layout_marginTop="10dp"
-                />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/repo_owner"
+                    android:text="@string/owner_of_the_repo"
+                    android:textColor="@color/grey5"
+                    android:textSize="15sp"
+                    android:layout_marginTop="10dp"
+                    />
 
-        </LinearLayout>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/list_star_logo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_star_fav_24dp"
+                android:layout_marginEnd="12dp"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 

@@ -2,17 +2,17 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "839d6343a420c892804ebce88dfda441",
+    "identityHash": "fb58ac5ee1cbc975525424691122e23b",
     "entities": [
       {
         "tableName": "repository_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `open_issues_count` INTEGER, `star_count` INTEGER, `repo_name` TEXT NOT NULL, `owner_name` TEXT NOT NULL, `owner_picture_url` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `open_issues_count` INTEGER, `star_count` INTEGER, `repo_name` TEXT NOT NULL, `owner_name` TEXT NOT NULL, `owner_picture_url` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
             "affinity": "INTEGER",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "openIssuesCount",
@@ -90,7 +90,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '839d6343a420c892804ebce88dfda441')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'fb58ac5ee1cbc975525424691122e23b')"
     ]
   }
 }

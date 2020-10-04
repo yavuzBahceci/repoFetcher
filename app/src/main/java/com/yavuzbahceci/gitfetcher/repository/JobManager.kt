@@ -30,7 +30,7 @@ open class JobManager(
     fun cancelActiveJobs(){
         for((methodName, job) in jobs){
             if(job.isActive){
-                Log.e(Companion.TAG, "$className: cancelling job in method: '$methodName'")
+                Log.e(TAG, "$className: cancelling job in method: '$methodName'")
                 job.cancel()
             }
         }

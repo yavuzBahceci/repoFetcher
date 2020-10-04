@@ -7,13 +7,13 @@ class RepositoryResponse {
 
     @SerializedName("id")
     @Expose
-    var repositoryId: Int? = null
+    var repositoryId: Int = -1
 
     @SerializedName("open_issues_count")
     @Expose
     var openIssuesCount: Int? = null
 
-    @SerializedName("star_count")
+    @SerializedName("stargazers_count")
     @Expose
     var starsCount: Int? = null
 

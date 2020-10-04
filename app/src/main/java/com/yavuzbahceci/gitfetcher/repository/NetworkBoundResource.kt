@@ -7,6 +7,9 @@ import com.yavuzbahceci.gitfetcher.ui.DataState
 import com.yavuzbahceci.gitfetcher.ui.Response
 import com.yavuzbahceci.gitfetcher.ui.ResponseType
 import com.yavuzbahceci.gitfetcher.util.*
+import com.yavuzbahceci.gitfetcher.util.Constants.Companion.NETWORK_TIMEOUT
+import com.yavuzbahceci.gitfetcher.util.Constants.Companion.TESTING_CACHE_DELAY
+import com.yavuzbahceci.gitfetcher.util.Constants.Companion.TESTING_NETWORK_DELAY
 import com.yavuzbahceci.gitfetcher.util.ErrorHandling.Companion.ERROR_CHECK_NETWORK_CONNECTION
 import com.yavuzbahceci.gitfetcher.util.ErrorHandling.Companion.ERROR_UNKNOWN
 import kotlinx.coroutines.*
@@ -15,10 +18,10 @@ import kotlinx.coroutines.Dispatchers.Main
 
 abstract class NetworkBoundResource<ResponseObject, CacheObject, ViewStateType>
     (
-    isNetworkAvailable: Boolean, // is their a network connection?
-    isNetworkRequest: Boolean, // is this a network request?
-    shouldCancelIfNoInternet: Boolean, // should this job be cancelled if there is no network?
-    shouldLoadFromCache: Boolean // should the cached data be loaded?
+    isNetworkAvailable: Boolean,
+    isNetworkRequest: Boolean,
+    shouldCancelIfNoInternet: Boolean,
+    shouldLoadFromCache: Boolean
 ) {
 
     private val TAG: String = "AppDebug"
@@ -63,18 +66,17 @@ abstract class NetworkBoundResource<ResponseObject, CacheObject, ViewStateType>
 
     fun doCacheRequest(){
         coroutineScope.launch {
-            // View data from cache only and return
+            delay(TESTING_CACHE_DELAY)
             createCacheRequestAndReturn()
         }
     }
 
     fun doNetworkRequest(){
         coroutineScope.launch {
+            delay(TESTING_NETWORK_DELAY)
 
-            // simulate a network delay for testing
             withContext(Main){
 
-                // make network call
                 val apiResponse = createCall()
                 result.addSource(apiResponse){ response ->
                     result.removeSource(apiResponse)
@@ -87,8 +89,8 @@ abstract class NetworkBoundResource<ResponseObject, CacheObject, ViewStateType>
         }
 
         GlobalScope.launch(IO){
+            delay(NETWORK_TIMEOUT)
 
-            delay(4000)
             if(!job.isCompleted){
                 Log.e(TAG, "NetworkBoundResource: JOB NETWORK TIMEOUT." )
                 job.cancel(CancellationException(ErrorHandling.UNABLE_TO_RESOLVE_HOST))
@@ -145,10 +147,10 @@ abstract class NetworkBoundResource<ResponseObject, CacheObject, ViewStateType>
         result.value = dataState
     }
 
-    @UseExperimental(InternalCoroutinesApi::class)
+    @OptIn(InternalCoroutinesApi::class)
     private fun initNewJob(): Job{
         Log.d(TAG, "initNewJob: called.")
-        job = Job() // create new job
+        job = Job()
         job.invokeOnCompletion(onCancelling = true, invokeImmediately = true, handler = object: CompletionHandler{
             override fun invoke(cause: Throwable?) {
                 if(job.isCancelled){
@@ -159,7 +161,6 @@ abstract class NetworkBoundResource<ResponseObject, CacheObject, ViewStateType>
                 }
                 else if(job.isCompleted){
                     Log.e(TAG, "NetworkBoundResource: Job has been completed.")
-                    // Do nothing? Should be handled already
                 }
             }
         })

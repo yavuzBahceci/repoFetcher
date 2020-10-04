@@ -10,23 +10,25 @@ import com.yavuzbahceci.gitfetcher.ui.DataState
 import com.yavuzbahceci.gitfetcher.ui.main.state.MainStateEvent
 import com.yavuzbahceci.gitfetcher.ui.main.state.MainStateEvent.*
 import com.yavuzbahceci.gitfetcher.ui.main.state.MainViewState
-import com.yavuzbahceci.gitfetcher.ui.main.state.SearchField
 import com.yavuzbahceci.gitfetcher.util.AbsentLiveData
 import javax.inject.Inject
 
 class MainViewModel
 @Inject
 constructor(
-        val mainRepository: MainRepository,
-        sharedPreferences: SharedPreferences,
-        private val requestManager: RequestManager
-    ): BaseViewModel<MainStateEvent, MainViewState>() {
+    val mainRepository: MainRepository,
+    sharedPreferences: SharedPreferences,
+    private val requestManager: RequestManager
+) : BaseViewModel<MainStateEvent, MainViewState>() {
 
 
     override fun handleStateEvent(stateEvent: MainStateEvent): LiveData<DataState<MainViewState>> {
-        return when(stateEvent) {
+        return when (stateEvent) {
             is SearchAttemptEvent -> {
-                mainRepository.attemptSearch(stateEvent.ownerName, stateEvent.page)
+                mainRepository.attemptSearch(
+                    stateEvent.ownerName,
+                    stateEvent.page
+                )
             }
 
             is ChangeStarOptionEvent -> {
@@ -41,12 +43,27 @@ constructor(
             is None -> {
                 AbsentLiveData.create()
             }
+            is CheckIsRepoStarred -> {
+                return AbsentLiveData.create()
+            }
         }
+    }
+
+    fun setRepoDetail(repositoryEntity: RepositoryEntity){
+        val update = getCurrentViewStateOrNew()
+        update.detailRepoFields.repositoryEntity = repositoryEntity
+        _viewState.value = update
+    }
+
+    fun setHasRepoStarred(hasRepoStarred: Boolean){
+        val update = getCurrentViewStateOrNew()
+        update.detailRepoFields.hasRepoStarred = hasRepoStarred
+        _viewState.value = update
     }
 
     fun setQuery(query: String) {
         val update = getCurrentViewStateOrNew()
-        if (query.equals(update.listRepoFields.searchQuery)){
+        if (query.equals(update.listRepoFields.searchQuery)) {
             return
         }
         update.listRepoFields.searchQuery = query

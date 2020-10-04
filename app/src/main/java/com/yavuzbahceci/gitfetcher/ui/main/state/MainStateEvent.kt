@@ -13,5 +13,7 @@ sealed class MainStateEvent {
 
     class None: MainStateEvent()
 
+    class CheckIsRepoStarred: MainStateEvent()
+
     class checkPreviousSearchEvent: MainStateEvent()
 }

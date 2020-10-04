@@ -12,7 +12,7 @@ data class RepositoryEntity(
 
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "id")
-    var id: Int?,
+    var id: Int,
 
     @ColumnInfo(name = "open_issues_count")
     var openIssuesCount: Int?,

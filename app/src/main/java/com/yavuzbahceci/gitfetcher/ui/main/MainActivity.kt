@@ -47,21 +47,6 @@ class MainActivity : BaseActivity(), NavController.OnDestinationChangedListener 
 
     private fun subscribeObservers() {
 
-        viewModel.dataState.observe(this, Observer { dataState ->
-            onDataStateChange(dataState)
-            dataState.data?.let { data ->
-                data.data?.let { event ->
-                    event.getContentIfNotHandled().let {
-                        // getList
-                    }
-                }
-            }
-
-        })
-
-        viewModel.viewState.observe(this, Observer {
-            //
-        })
     }
 
     companion object {

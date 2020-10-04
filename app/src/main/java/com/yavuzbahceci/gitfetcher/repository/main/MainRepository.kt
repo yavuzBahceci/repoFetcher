@@ -17,8 +17,10 @@ import com.yavuzbahceci.gitfetcher.ui.ResponseType
 import com.yavuzbahceci.gitfetcher.ui.main.state.MainViewState
 import com.yavuzbahceci.gitfetcher.ui.main.state.MainViewState.ListRepoFields
 import com.yavuzbahceci.gitfetcher.ui.main.state.SearchField
-import com.yavuzbahceci.gitfetcher.util.*
+import com.yavuzbahceci.gitfetcher.util.ApiSuccessResponse
 import com.yavuzbahceci.gitfetcher.util.Constants.Companion.PAGINATION_PAGE_SIZE
+import com.yavuzbahceci.gitfetcher.util.GenericApiResponse
+import com.yavuzbahceci.gitfetcher.util.InternetChecker
 import com.yavuzbahceci.gitfetcher.util.SuccessHandling.Companion.SUCCESS_GENERAL
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
@@ -37,9 +39,6 @@ constructor(
     val preferences: SharedPreferences,
     val editor: SharedPreferences.Editor,
 ) : JobManager("MainRepository") {
-
-    private var repositoryJob: Job? = null
-
 
     fun attemptSearch(ownerName: String, page: Int): LiveData<DataState<MainViewState>> {
 
@@ -60,16 +59,17 @@ constructor(
                 withContext(Dispatchers.Main) {
                     result.addSource(loadFromCache()) { viewState ->
                         viewState.listRepoFields.isQueryInProgress = false
-                        if(page * PAGINATION_PAGE_SIZE > viewState.listRepoFields.repoList.size){
+                        if (page * PAGINATION_PAGE_SIZE > viewState.listRepoFields.repoList.size) {
                             viewState.listRepoFields.isQueryExhausted = true
                         }
+                        println("!!!! before on complete ${viewState.listRepoFields}")
                         onCompleteJob(DataState.data(viewState, null))
                     }
                 }
             }
 
             override fun loadFromCache(): LiveData<MainViewState> {
-                return repositoryDao.getAllRepositories(ownerName, page).switchMap {
+                return repositoryDao.getSearchedRepositories(ownerName, page).switchMap {
                     object : LiveData<MainViewState>() {
                         override fun onActive() {
                             super.onActive()
@@ -79,6 +79,9 @@ constructor(
                                     isQueryInProgress = true
                                 )
                             )
+                            it.map {
+                                println("!!!!!!!!$it  load from cache")
+                            }
                         }
                     }
                 }
@@ -87,14 +90,21 @@ constructor(
             override suspend fun updateLocalDb(cacheObject: List<RepositoryEntity>?) {
                 if (cacheObject != null) {
                     withContext(IO) {
+                        println("!!!!!! WithContextIO")
                         for (repo in cacheObject) {
+                            println("!!!!!! Before try")
                             try {
                                 launch {
+                                    println("!!!!!! Launch")
                                     Log.d(TAG, "updateLocalDb: Repo inserting $repo")
                                     repositoryDao.insertOrIgnore(repo)
+                                    println("Inserting repo $repo !!!!!!")
                                 }
                             } catch (e: Exception) {
-                                Log.e(TAG, "updateLocalDb: Error updating repository db ${e.message}", )
+                                Log.e(
+                                    TAG,
+                                    "updateLocalDb: Error updating repository db ${e.message}",
+                                )
                             }
                         }
                     }
@@ -102,13 +112,17 @@ constructor(
             }
 
             override fun setJob(job: Job) {
-                addJob("searchRepository", job)
+                addJob("attemptSearch", job)
             }
 
             override suspend fun handleApiSuccessResponse(response: ApiSuccessResponse<List<RepositoryResponse>>) {
                 val repositoryList: ArrayList<RepositoryEntity> = ArrayList()
+                println("${response.body} !!!!!!!!! response body")
                 for (repositoryResponse in response.body) {
-                    repositoryResponse.convert()?.let { repositoryList.add(it) }
+                    repositoryResponse.convert().let { repositoryList.add(it) }
+                }
+                response.body.map {
+                    println("!!!!!!!!$it success Response")
                 }
                 updateLocalDb(repositoryList)
                 createCacheRequestAndReturn()
@@ -137,8 +151,6 @@ constructor(
     }
 
 
-
-
     private fun noPreviousListFound(): LiveData<DataState<MainViewState>> {
 
         return object : LiveData<DataState<MainViewState>>() {
@@ -159,17 +171,13 @@ constructor(
 
 }
 
-private fun RepositoryResponse.convert(): RepositoryEntity? {
-    return try {
-        RepositoryEntity(
-            this.repositoryId,
-            this.openIssuesCount,
-            this.starsCount,
-            this.repositoryName!!,
-            this.owner?.ownerName!!,
-            this.owner?.avatarUrl!!
-        )
-    } catch (exception: Exception) {
-        null
-    }
+private fun RepositoryResponse.convert(): RepositoryEntity {
+    return RepositoryEntity(
+        this.repositoryId,
+        this.openIssuesCount,
+        this.starsCount,
+        this.repositoryName!!,
+        this.owner?.ownerName!!,
+        this.owner?.avatarUrl!!
+    )
 }

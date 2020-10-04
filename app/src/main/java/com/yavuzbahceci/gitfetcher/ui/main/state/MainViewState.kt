@@ -9,7 +9,7 @@ data class MainViewState(
     var searchField: SearchField? = SearchField()
 ) {
     data class ListRepoFields(
-        var repoList: List<RepositoryEntity> = ArrayList<RepositoryEntity>(),
+        var repoList: List<RepositoryEntity> = ArrayList(),
         var searchQuery: String = "",
         var page: Int = 1,
         var isQueryInProgress: Boolean = false,
@@ -20,7 +20,6 @@ data class MainViewState(
         var repositoryEntity: RepositoryEntity? = null,
         var hasRepoStarred: Boolean = false
     )
-
 }
 
 data class SearchField(

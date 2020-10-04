@@ -28,4 +28,17 @@ data class RepositoryEntity(
 
     @ColumnInfo(name = "owner_picture_url")
     var avatarUrl: String
-)
+
+
+){
+
+    override fun toString(): String {
+        return "BlogPost(id=$id, " +
+                "openIssuesCount='$openIssuesCount', " +
+                "name='$name', " +
+                "ownerName='$ownerName', " +
+                "avatarUrl='$avatarUrl')"
+    }
+
+
+}

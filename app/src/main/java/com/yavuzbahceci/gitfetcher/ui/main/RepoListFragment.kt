@@ -61,10 +61,7 @@ class RepoListFragment : BaseMainFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        viewModel.setSearchField(
-            // Set the edit_text TODO()
-            SearchField("")
-        )
+
     }
 
     fun searchRepos() {

@@ -10,5 +10,7 @@ sealed class MainStateEvent {
         val repoId: Int
     ): MainStateEvent()
 
+    class None: MainStateEvent()
+
     class checkPreviousSearchEvent: MainStateEvent()
 }

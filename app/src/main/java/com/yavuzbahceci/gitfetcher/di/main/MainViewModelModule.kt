@@ -13,6 +13,6 @@ abstract class MainViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(MainViewModel::class)
-    abstract fun bindAuthViewModel(mainViewModel: MainViewModel): ViewModel
+    abstract fun bindMainViewModel(mainViewModel: MainViewModel): ViewModel
 
 }

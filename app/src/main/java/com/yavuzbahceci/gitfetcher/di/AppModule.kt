@@ -3,7 +3,6 @@ package com.yavuzbahceci.gitfetcher.di
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.room.PrimaryKey
 import androidx.room.Room
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
@@ -25,13 +24,16 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
-class AppModule{
+class AppModule {
 
 
     @Singleton
     @Provides
     fun provideSharedPreferences(application: Application): SharedPreferences {
-        return application.getSharedPreferences(PreferenceKeys.APP_PREFERENCES, Context.MODE_PRIVATE)
+        return application.getSharedPreferences(
+            PreferenceKeys.APP_PREFERENCES,
+            Context.MODE_PRIVATE
+        )
     }
 
     @Singleton
@@ -74,21 +76,12 @@ class AppModule{
 
     @Singleton
     @Provides
-    fun provideGlideInstance(application: Application, requestOptions: RequestOptions): RequestManager {
+    fun provideGlideInstance(
+        application: Application,
+        requestOptions: RequestOptions
+    ): RequestManager {
         return Glide.with(application)
             .setDefaultRequestOptions(requestOptions)
-    }
-
-    @Singleton
-    @Provides
-    fun provideRepositoryDao(db: AppDatabase): RepositoryDao {
-        return db.getRepositoryDao()
-    }
-
-    @Singleton
-    @Provides
-    fun provideStarredRepoDao(db: AppDatabase): StarredRepoDao {
-        return db.getStarredRepoDao()
     }
 
 }

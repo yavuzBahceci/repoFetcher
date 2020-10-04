@@ -1,6 +1,9 @@
 package com.yavuzbahceci.gitfetcher.ui.main
 
+import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
+import com.bumptech.glide.RequestManager
+import com.yavuzbahceci.gitfetcher.persistence.entities.RepositoryEntity
 import com.yavuzbahceci.gitfetcher.repository.main.MainRepository
 import com.yavuzbahceci.gitfetcher.ui.BaseViewModel
 import com.yavuzbahceci.gitfetcher.ui.DataState
@@ -14,7 +17,9 @@ import javax.inject.Inject
 class MainViewModel
 @Inject
 constructor(
-        val mainRepository: MainRepository
+        val mainRepository: MainRepository,
+        sharedPreferences: SharedPreferences,
+        private val requestManager: RequestManager
     ): BaseViewModel<MainStateEvent, MainViewState>() {
 
 
@@ -33,15 +38,24 @@ constructor(
             is checkPreviousSearchEvent -> {
                 AbsentLiveData.create()
             }
+            is None -> {
+                AbsentLiveData.create()
+            }
         }
     }
 
-    fun setSearchField(searchField: SearchField) {
+    fun setQuery(query: String) {
         val update = getCurrentViewStateOrNew()
-        if (update.searchField == searchField){
+        if (query.equals(update.listRepoFields.searchQuery)){
             return
         }
-        update.searchField = searchField
+        update.listRepoFields.searchQuery = query
+        _viewState.value = update
+    }
+
+    fun setRepoListData(repoList: List<RepositoryEntity>) {
+        val update = getCurrentViewStateOrNew()
+        update.listRepoFields.repoList = repoList
         _viewState.value = update
     }
 
@@ -51,6 +65,11 @@ constructor(
 
     fun cancelActiveJobs() {
         mainRepository.cancelActiveJobs()
+        handlePendingData()
+    }
+
+    private fun handlePendingData() {
+        setStateEvent(None())
     }
 
     override fun onCleared() {

@@ -1,10 +1,12 @@
 package com.yavuzbahceci.gitfetcher.persistence.daos
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.yavuzbahceci.gitfetcher.persistence.entities.RepositoryEntity
+import com.yavuzbahceci.gitfetcher.util.Constants.Companion.PAGINATION_PAGE_SIZE
 
 @Dao
 interface RepositoryDao {
@@ -23,5 +25,13 @@ interface RepositoryDao {
 
     @Query("SELECT * FROM repository_table WHERE owner_name = :ownerName")
     fun searchByOwnerName(ownerName: String): List<RepositoryEntity>
+
+    @Query(""" SELECT * FROM repository_table WHERE owner_name LIKE '%' || :query || '%'""")
+    fun getAllRepositories(
+        query: String
+    ): LiveData<List<RepositoryEntity>>
+
+    @Query("DELETE FROM repository_table")
+    fun deleteAll()
 
 }

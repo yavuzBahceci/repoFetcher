@@ -2,13 +2,13 @@ package com.yavuzbahceci.gitfetcher.ui.main
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.yavuzbahceci.gitfetcher.R
 import com.yavuzbahceci.gitfetcher.persistence.entities.RepositoryEntity
 import com.yavuzbahceci.gitfetcher.ui.DataState
@@ -16,6 +16,7 @@ import com.yavuzbahceci.gitfetcher.ui.main.state.MainStateEvent
 import com.yavuzbahceci.gitfetcher.ui.main.state.MainViewState
 import com.yavuzbahceci.gitfetcher.ui.main.viewmodel.*
 import com.yavuzbahceci.gitfetcher.util.TopSpacingItemDecoration
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_repo_list.*
 
 
@@ -24,7 +25,7 @@ import kotlinx.android.synthetic.main.fragment_repo_list.*
  * Use the [RepoListFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class RepoListFragment : BaseMainFragment(), RepositoryListAdapter.Interaction {
+class RepoListFragment : BaseMainFragment(), RepositoryListAdapter.Interaction, SwipeRefreshLayout.OnRefreshListener {
 
 
     private lateinit var recyclerAdapter: RepositoryListAdapter
@@ -43,10 +44,13 @@ class RepoListFragment : BaseMainFragment(), RepositoryListAdapter.Interaction {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        swipe_refresh.setOnRefreshListener(this)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(true)
 
         submit_button.setOnClickListener {
-            viewModel.loadFirstPage()
+            onRepoSearch()
         }
+
         initRecyclerview()
         subscribeObservers()
     }
@@ -78,6 +82,19 @@ class RepoListFragment : BaseMainFragment(), RepositoryListAdapter.Interaction {
         })
     }
 
+    private fun onRepoSearch(){
+        viewModel.setQuery(user_name_edit_text.text.toString())
+        viewModel.loadFirstPage().let {
+            resetUI()
+        }
+    }
+
+    private fun resetUI() {
+        repo_list_recyclerview.smoothScrollToPosition(0)
+        stateChangeListener.hideSoftKeyboard()
+        focusable_view.requestFocus()
+    }
+
     private fun handlePagination(dataState: DataState<MainViewState>?) {
 
         // handle incoming data from DataState
@@ -94,7 +111,6 @@ class RepoListFragment : BaseMainFragment(), RepositoryListAdapter.Interaction {
 
         dataState?.error?.let { event ->
             event.getContentIfNotHandled()
-            viewModel.setQueryExhausted(true)
         }
     }
 
@@ -151,6 +167,11 @@ class RepoListFragment : BaseMainFragment(), RepositoryListAdapter.Interaction {
 
     companion object {
         private const val TAG = "RepoListFragment"
+    }
+
+    override fun onRefresh() {
+        onRepoSearch()
+        swipe_refresh.isRefreshing = false
     }
 
 

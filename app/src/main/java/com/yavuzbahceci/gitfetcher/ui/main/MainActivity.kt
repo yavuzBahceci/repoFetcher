@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
+import com.google.android.material.appbar.AppBarLayout
 import com.yavuzbahceci.gitfetcher.R
 import com.yavuzbahceci.gitfetcher.ui.BaseActivity
 import com.yavuzbahceci.gitfetcher.ui.main.viewmodel.MainViewModel
@@ -41,6 +42,14 @@ class MainActivity : BaseActivity(), NavController.OnDestinationChangedListener 
         findNavController(R.id.main_nav_host_fragment).addOnDestinationChangedListener(this)
         subscribeObservers()
     }
+
+    override fun expandAppBar() {
+        findViewById<AppBarLayout>(R.id.app_bar).setExpanded(true)    }
+
+    override fun hideSoftKeyboard() {
+
+    }
+
 
     private fun subscribeObservers() {
 

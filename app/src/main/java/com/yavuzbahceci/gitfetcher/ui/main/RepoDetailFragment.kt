@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import com.yavuzbahceci.gitfetcher.R
 import com.yavuzbahceci.gitfetcher.persistence.entities.RepositoryEntity
 import com.yavuzbahceci.gitfetcher.ui.main.state.MainStateEvent
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.fragment_repo_detail.*
 import kotlinx.android.synthetic.main.fragment_repo_detail.repo_owner
 import kotlinx.android.synthetic.main.fragment_repo_list.*
@@ -58,6 +60,8 @@ class RepoDetailFragment : BaseMainFragment() {
         repo_name_detail.setText(repositoryEntity.name)
         star_count.setText("Stars: ${repositoryEntity.stargazerCount}")
         open_issues_count.setText("Open Issues: ${repositoryEntity.openIssuesCount}")
+        tool_bar.tool_bar_text.setText(repositoryEntity.name)
+
     }
 
     fun changeStarOption() {

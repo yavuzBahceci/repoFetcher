@@ -11,7 +11,9 @@ data class MainViewState(
     data class ListRepoFields(
         var repoList: List<RepositoryEntity> = ArrayList<RepositoryEntity>(),
         var searchQuery: String = "",
-        var isQueryInProgress: Boolean = false
+        var page: Int = 1,
+        var isQueryInProgress: Boolean = false,
+        var isQueryExhausted: Boolean = false
     )
 
     data class DetailRepoFields(

@@ -26,7 +26,7 @@ constructor(
     override fun handleStateEvent(stateEvent: MainStateEvent): LiveData<DataState<MainViewState>> {
         return when(stateEvent) {
             is SearchAttemptEvent -> {
-                mainRepository.attemptSearch(stateEvent.ownerName)
+                mainRepository.attemptSearch(stateEvent.ownerName, stateEvent.page)
             }
 
             is ChangeStarOptionEvent -> {

@@ -33,7 +33,7 @@ data class RepositoryEntity(
 ){
 
     override fun toString(): String {
-        return "BlogPost(id=$id, " +
+        return "RepositoryEntity(id=$id, " +
                 "openIssuesCount='$openIssuesCount', " +
                 "name='$name', " +
                 "ownerName='$ownerName', " +

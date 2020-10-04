@@ -18,6 +18,7 @@ import com.yavuzbahceci.gitfetcher.ui.main.state.MainViewState
 import com.yavuzbahceci.gitfetcher.ui.main.state.MainViewState.ListRepoFields
 import com.yavuzbahceci.gitfetcher.ui.main.state.SearchField
 import com.yavuzbahceci.gitfetcher.util.*
+import com.yavuzbahceci.gitfetcher.util.Constants.Companion.PAGINATION_PAGE_SIZE
 import com.yavuzbahceci.gitfetcher.util.SuccessHandling.Companion.SUCCESS_GENERAL
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
@@ -40,7 +41,7 @@ constructor(
     private var repositoryJob: Job? = null
 
 
-    fun attemptSearch(ownerName: String): LiveData<DataState<MainViewState>> {
+    fun attemptSearch(ownerName: String, page: Int): LiveData<DataState<MainViewState>> {
 
         val searchFieldErrors = SearchField(ownerName).isValidForSearch()
         if (searchFieldErrors != SearchField.SearchError.none()) {
@@ -59,13 +60,16 @@ constructor(
                 withContext(Dispatchers.Main) {
                     result.addSource(loadFromCache()) { viewState ->
                         viewState.listRepoFields.isQueryInProgress = false
+                        if(page * PAGINATION_PAGE_SIZE > viewState.listRepoFields.repoList.size){
+                            viewState.listRepoFields.isQueryExhausted = true
+                        }
                         onCompleteJob(DataState.data(viewState, null))
                     }
                 }
             }
 
             override fun loadFromCache(): LiveData<MainViewState> {
-                return repositoryDao.getAllRepositories(ownerName).switchMap {
+                return repositoryDao.getAllRepositories(ownerName, page).switchMap {
                     object : LiveData<MainViewState>() {
                         override fun onActive() {
                             super.onActive()
@@ -111,7 +115,7 @@ constructor(
             }
 
             override fun createCall(): LiveData<GenericApiResponse<List<RepositoryResponse>>> {
-                return repoFetcherMainService.getUserRepos(ownerName)
+                return repoFetcherMainService.getUserRepos(ownerName, page)
             }
 
         }.asLiveData()

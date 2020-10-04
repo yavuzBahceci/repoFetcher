@@ -67,7 +67,8 @@ class RepoListFragment : BaseMainFragment() {
     fun searchRepos() {
         viewModel.setStateEvent(
             MainStateEvent.SearchAttemptEvent(
-                user_name_edit_text.text.toString()
+                user_name_edit_text.text.toString(),
+                0
             )
         )
     }

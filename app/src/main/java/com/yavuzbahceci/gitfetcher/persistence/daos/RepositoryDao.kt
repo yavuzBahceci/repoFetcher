@@ -26,9 +26,11 @@ interface RepositoryDao {
     @Query("SELECT * FROM repository_table WHERE owner_name = :ownerName")
     fun searchByOwnerName(ownerName: String): List<RepositoryEntity>
 
-    @Query(""" SELECT * FROM repository_table WHERE owner_name LIKE '%' || :query || '%'""")
+    @Query(""" SELECT * FROM repository_table WHERE owner_name LIKE '%' || :query || '%' LIMIT (:page * :pageSize)""")
     fun getAllRepositories(
-        query: String
+        query: String,
+        page: Int,
+        pageSize: Int = PAGINATION_PAGE_SIZE
     ): LiveData<List<RepositoryEntity>>
 
     @Query("DELETE FROM repository_table")
